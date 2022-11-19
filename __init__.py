@@ -37,12 +37,12 @@ SCHEMA_WEBSOCKET_UPDATE = websocket_api.BASE_COMMAND_MESSAGE_SCHEMA.extend(
 )
 
 
-@asyncio.coroutine
-def async_setup(hass, config):
+
+async def async_setup(hass, config):
     """Initialize the schedule list."""
 
     data = hass.data[DOMAIN] = ScheduleData(hass)
-    yield from data.async_load()
+    await data.async_load()
 
 
     hass.components.websocket_api.async_register_command(
@@ -76,15 +76,14 @@ class ScheduleData:
         self.data[sid] = data
         self.hass.async_add_job(self.save)
 
-    @asyncio.coroutine
-    def async_load(self):
+    async def async_load(self):
         """Load items."""
 
         def load():
             """Load the items synchronously."""
             return load_json(self.hass.config.path(PERSISTENCE), default={})
         _LOGGER.debug("Start load schedule")
-        self.data = yield from self.hass.async_add_job(load)
+        self.data = await self.hass.async_add_job(load)
         _LOGGER.debug("End load schedule")
 
     def save(self):
