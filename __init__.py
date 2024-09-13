@@ -7,7 +7,8 @@ import voluptuous as vol
 
 from homeassistant.core import callback
 import homeassistant.helpers.config_validation as cv
-from homeassistant.util.json import load_json, save_json
+from homeassistant.util.json import load_json
+from homeassistant.helpers.json import save_json
 from homeassistant.components import websocket_api
 
 ATTR_NAME = "name"
